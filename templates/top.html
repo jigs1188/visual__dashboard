@@ -1,0 +1,35 @@
+<!-- top_entries.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 5 Entries</title>
+    <style>
+        /* Add your CSS styles here */
+        .entry {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .entry h2 {
+            margin-top: 0;
+        }
+        /* Add more styles as needed */
+    </style>
+</head>
+<body>
+
+<h1>Top 5 Entries</h1>
+
+{% for entry in top_entries %}
+<div class="entry">
+    <h2>{{ entry.title }}</h2>
+    <p><strong>Sector:</strong> {{ entry.sector }}</p>
+    <!-- Add more fields as needed -->
+</div>
+{% endfor %}
+
+</body>
+</html>

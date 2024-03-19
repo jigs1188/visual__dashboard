@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+
+{% block title %}Datatable{% endblock title %}
+
+{% block partial %}
+
+<div class="container bs-primary">
+
+    <h1 class="bg-dark text-light">Datatable</h1>
+
+    <table id="myTable"></table>
+</div>
+
+
+<div class="container mt-3 pl-5">
+
+    <script>
+        const dataTable = new simpleDatatables.DataTable("#myTable", {
+	searchable: false,
+	fixedHeight: true,
+
+})
+    </script>
+
+</div>
+
+{% endblock partial %}

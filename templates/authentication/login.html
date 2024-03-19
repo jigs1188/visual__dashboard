@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block css %} 
+
+<style>
+
+  /* Login form styles */
+  .login-container {
+  margin-top: 400px;
+  background-image: linear-gradient(90deg, #1a1d1d, #008b8b);
+  color: #008b8b;
+  color-scheme: light;
+}
+
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-left: 5px;
+  background-color: #f9f9f9;
+  /* border-radius: 5px; */
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #00bbbb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #008b8b;
+}
+
+  
+</style>
+
+{% endblock css %}
+
+{% block authentication %}
+
+<div class="login-container">
+
+  
+
+    <form class="login-form" action="/login" method="post">
+
+      {% csrf_token %}
+
+  {% include 'notify/messages.html' %}
+
+      <h2 style="color: #008b8b;">Login</h2>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+{% endblock %}
