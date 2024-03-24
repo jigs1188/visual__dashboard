@@ -19,6 +19,6 @@ Welcome to my Dashboard project built using Django! This project aims to provide
 
 ## Contact
 
-If you have any questions or suggestions regarding the Dashboard project, feel free to reach out to me at [your-email@example.com](mailto:parmarjigs1188@gmail.com).
+If you have any questions or suggestions regarding the Dashboard project, feel free to reach out to me at parmarjigs1188@gmail.com
 
 Thank you for using the Dashboard project! Happy data management and user interaction! 🚀
