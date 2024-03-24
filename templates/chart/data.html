@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+    console.log("hello");
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chart {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    cosole.log("hello2");
+    <div class="container">
+        <canvas id="intensityChart" class="chart"></canvas>
+        <canvas id="likelihoodChart" class="chart"></canvas>
+        <canvas id="relevanceChart" class="chart"></canvas>
+    </div>
+
+    console.log("hello3");
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("hello4");
+            const data = '{{ data|safe }}'; // Assuming data is passed from backend
+
+            const intensityLabels = data.map(entry => entry.Intensity);
+            const intensityValues = data.map(entry => entry.Quantity1);
+
+            const likelihoodLabels = data.map(entry => entry.Likelihood);
+            const likelihoodValues = data.map(entry => entry.Quantity2);
+
+            const relevanceLabels = data.map(entry => entry.Relevance);
+            const relevanceValues = data.map(entry => entry.Quantity3);
+
+            console.log(intensityLabels);
+            const intensityCtx = document.getElementById('intensityChart').getContext('2d');
+            const likelihoodCtx = document.getElementById('likelihoodChart').getContext('2d');
+            const relevanceCtx = document.getElementById('relevanceChart').getContext('2d');
+            console.log("hello5");
+            new Chart(intensityCtx, {
+                console.log("hello6");
+                type: 'bar',
+                data: {
+                    labels: intensityLabels,
+                    datasets: [{
+                        label: 'Intensity',
+                        data: intensityValues,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            new Chart(likelihoodCtx, {
+                type: 'line',
+                data: {
+                    labels: likelihoodLabels,
+                    datasets: [{
+                        label: 'Likelihood',
+                        data: likelihoodValues,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            new Chart(relevanceCtx, {
+                type: 'radar',
+                data: {
+                    labels: relevanceLabels,
+                    datasets: [{
+                        label: 'Relevance',
+                        data: relevanceValues,
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+

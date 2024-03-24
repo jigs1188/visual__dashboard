@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from myapp.models import Insight
 from datetime import datetime
-
+# from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -19,9 +19,10 @@ def datatable(request):
 def upload(request):
     return render(request, "upload.html")
 
-
+# @login_required(login_url='authentication/login')
 def base(request):
     return render(request, "base.html")
+
 
 # def insights(request):
 #     return render(request, "insights.html")

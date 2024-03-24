@@ -8,32 +8,19 @@ from urllib3 import HTTPResponse
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
-# from .models import User
+from django.contrib import auth
 from validate_email import validate_email
 from django.contrib import messages
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage,send_mail
 
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.template.loader import render_to_string 
-# from .tokens import account_activation_token
+from django.utils.encoding import force_bytes,DjangoUnicodeDecodeError
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-
-from .forms import RegistrationForm
-
+from .utils import account_activation_token
+from django.contrib.auth import get_user_model
 from .utils import TokenGenerator
-# Create your views here.
 
-class login(View):
-    def get(self, request):
-        return render(request, 'authentication/login.html')
-    def post(self, request):
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        email=request.POST.get('email')
-        new_user = User.objects.create_user(username, email, password)
-        return HttpResponseRedirect('/registration_success/')
-    
 class usernamevalidation(View):
     def post(self, request):    
         data = loads(request.body)
@@ -84,23 +71,29 @@ class registration(View):
                 #-getting domain of current site
                 # rrelative url to verify email
                 # encode uid and token
-
+                
                 domain = get_current_site(request).domain
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 token = TokenGenerator.make_token(user)
+                # link = reverse('activate',kwargs={'uidb64':uidb64,'token':token})
                 link = reverse('authentication:activate',kwargs={'uidb64':uidb64,'token':token})
 
-                activate_url = 'http://'+domain+link
+                activate_url = 'https://'+domain+link
+
+                email_body={
+                    'user': user,
+                    'domain': domain,
+                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                    'link': activate_url
+                }
 
 
 
-
-
-                email_body=f'Hi {user.username},\n Use the link below to verify your email \n {activate_url}'
                 email = EmailMessage(
                         "activate your account",
                         email_body,
-                        "from@example.com",
+                        "HgUeh@example.com",
                         [email],
                         
                 )
@@ -113,19 +106,60 @@ class registration(View):
             messages.error(request, 'Email already exists')
             return render(request, 'authentication/register.html',context)
         messages.error(request, 'Username already exists')
-        return render(request, 'authentication/register.html',context)
+        return render(request, 'authentication/login.html',context)
     
 
-        
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+
+class verification(View):
+    def get(self, request, uid64, token):
+
+        try:
+            id = force_str(urlsafe_base64_decode(uid64))
+            user = User.objects.get(pk=id)
+
+            if not account_activation_token.check_token(user, token):
+                return redirect('login' + '?message=' + 'User already activated')
+
+            if user.is_active:
+                return redirect('login')
+
+            user.is_active = True
+            user.save()
+
+            messages.success(request, 'Account activated successfully')
+            return redirect('login')
+
+        except Exception as ex:
+
+            pass
+        return redirect('login')
+    
       
-        # Redirect to a success page
-        # return render(request, 'authentication/register.html')  # Assuming you have a template named('/registration/success/')
+
+class login(View):
+    def get(self, request):
+        return render(request, 'authentication/login.html')
     
+    def post(self,request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
+        if username and password:
+            user = auth.authenticate(username=username, password=password)
 
-
-# class RegistrationSuccessView(TemplateView):
-#     template_name = 'registration_success.html'  # Assuming you have a template named 'registration_success.html'
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    messages.success(request, 'Welcome, '+ user.username)
+                    return redirect(request,'/register.html')
+                messages.error(request, 'Account is not active,please check your email')
+                return render(request, 'authentication/login.html')
+            messages.error(request, 'Invalid credentials,try again')
+            return render(request, 'authentication/login.html')
+        messages.error(request, 'Please fill all fields')
+        return render(request, 'authentication/login.html')
 
 
 from django.views.generic import TemplateView
@@ -133,23 +167,8 @@ from django.views.generic import TemplateView
 class RegistrationSuccessView(TemplateView):
     template_name = 'authentication/registration_success.html'  # Assuming you have a template named 'registration_success.html'
 
-
-# def register(request):
-#     if request.method == 'POST':
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             # Create a new user
-#             User.objects.create_user(username=username, email=email, password=password)
-#             # Redirect to a success page or login page
-#             return redirect('login')  # Assuming you have a URL pattern named 'login'
-#     else:
-#         form = RegistrationForm()
-#     return render(request, 'authentication/register.html', {'form': form})
-
-class verification(View):
-    def get(self,request,uid64,token):
-        return redirect('login')
-
+class LogOutView(View):
+    def post(self, request):
+        auth.logout(request)
+        messages.success(request, 'You are now logged out')
+        return redirect(request,'login')

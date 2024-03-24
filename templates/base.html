@@ -45,14 +45,26 @@
       <ul>
 
         <li>
-          <a href="http://startific.com">
+          <a href=' '>
             <i class="fa fa-home fa-lg"></i>
             <span class="nav-text">Dashboard</span>
           </a>
         </li>
 
         <li>
-          <a href="http://startific.com">
+          <a href="authentication/registration">
+            <!-- <i class="fa fa-envelope-o fa-lg"></i> -->
+            <i class="fa fa-user fa-lg"></i>
+
+            <span class="nav-text">signup</span>
+          </a>
+        </li>
+
+
+
+
+        <li>
+          <a href="authentication/login">
             <i class="fa fa-user fa-lg"></i>
             <span class="nav-text">Login</span>
           </a>
@@ -61,12 +73,7 @@
 
 
 
-        <li>
-          <a href="http://startific.com">
-            <i class="fa fa-envelope-o fa-lg"></i>
-            <span class="nav-text">Contact</span>
-          </a>
-        </li>
+       
 
 
         <!-- 
@@ -270,11 +277,17 @@ margin-left: 56px;top:3px;">
   </div> 
 
   <div class="header">
-    <h1 class="company-header">World's Most Popular News</h1>
+    <h1 class="company-header">visual data</h1>
     <div class="search-bar">
       <input type="text" placeholder="Search...">
       <button><i class="fa fa-search"></i></button>
     </div>
+
+    <form action="{% url 'authentication:logout' %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" class="sign-out" value="Sign Out"> 
+      <!-- <a href="authentication/logout" class="sign-out ">Sign Out</a> -->
+    </form>
   </div>
 
   <main class="container-fluid">

@@ -25,5 +25,6 @@ admin.site.index_title = "Welcome to myproject"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
-    path('authentication/', include('authentication.urls'))
+    path('authentication/', include('authentication.urls')),
+    path('dash/', include('dash.urls')),
 ]

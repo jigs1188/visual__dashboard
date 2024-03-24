@@ -114,6 +114,7 @@
         
 
     }
+    
     .error{
         color: red;
         background-color: rgb(246, 239, 239);
@@ -131,13 +132,11 @@
 <div class="registration-container">
     
 
-    <form class="registration-form" action="authentication/registration/" method="post" >
-        <h2>Registration</h2>
+    <form class="registration-form" action=" " method="post" >
 
-        <div class="message">
-            {% csrf_token %} 
-            {% include 'notify/messages.html' %}
-        </div>
+        {% csrf_token %}
+        <!-- {% include 'notify/messages.html' %} -->
+        <h2>Registration</h2>
        
         <div class="form-group">
             <label for="username">Username</label>

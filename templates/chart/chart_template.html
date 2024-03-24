@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+console.log("hello");
+
+{% block title %}Dashboard{% endblock %}
+
+<link rel="stylesheet" href="{% static '/css/charts.css' %}">
+{% block css %}
+
+<style>
+    .container {
+        margin-left: 200px;
+        margin-top: 140px;
+    }
+    .charts-container {
+        display: flex; /* Use flexbox layout */
+        flex-wrap: wrap; /* Allow charts to wrap to the next line */
+        justify-content: space-around; /* Distribute charts evenly along the main axis */
+        align-items: flex-start; /* Align charts at the start of the cross axis */
+    }
+
+    .chart-container {
+        width: calc(25% - 20px); /* Set width to 50% with some margin */
+        margin: 10px; /* Add margin for spacing between charts */
+    }
+
+    @media (max-width: 768px) {
+        .chart-container {
+            width: calc(50% - 20px); /* Set width to 100% with some margin on smaller screens */
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container">
+<div class="charts-container">
+    {% for entity in entities %}
+    <div class="chart-container">
+        <h2>{{ entity }}</h2>
+        <canvas id="{{ entity|lower }}Chart" width="400" height="400"></canvas>
+    </div>
+    {% endfor %}
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var data = {{ data|safe }};
+        var entities = ['Intensity', 'Likelihood', 'Relevance', 'Year', 'Country', 'Topics', 'Region', 'City'];
+        var filters = ['End Year', 'Topics', 'Sector', 'Region', 'PEST', 'Source', 'SWOT', 'Country', 'City'];
+
+        // Define colors for each entity
+        var colors = {
+            'Intensity': 'rgba(255, 99, 132, 0.5)',      // Red
+            'Likelihood': 'rgba(54, 162, 235, 0.5)',     // Blue
+            'Relevance': 'rgba(255, 206, 86, 0.5)',      // Yellow
+            'Year': 'rgba(75, 192, 192, 0.5)',           // Green
+            'Country': 'rgba(153, 102, 255, 0.5)',       // Purple
+            'Topics': 'rgba(255, 159, 64, 0.5)',         // Orange
+            'Region': 'rgba(255, 102, 204, 0.5)',        // Pink
+            'City': 'rgba(0, 204, 204, 0.5)'             // Cyan
+        };
+
+        // Define chart types for each entity
+        var chartTypes = {
+            'Intensity': 'bar',
+            'Likelihood': 'bar',
+            'Relevance': 'bar',
+            'Year': 'bar',
+            'Country': 'bar',
+            'Topics': 'bar',
+            'Region': 'bar',
+            'City': 'bar'
+        };
+
+        // Create a chart for each entity
+        entities.forEach(function(entity) {
+            var ctx = document.getElementById(entity.toLowerCase() + 'Chart').getContext('2d');
+            var labels = [];
+            var values = [];
+
+            // Extracting data for the chart
+            data.forEach(function(row) {
+                labels.push(row[entity.toLowerCase()]);
+                values.push(row[entity.toLowerCase()]);
+            });
+
+            var chart = new Chart(ctx, {
+                type: chartTypes[entity],
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: entity,
+                        data: values,
+                        backgroundColor: colors[entity],
+                        borderColor: 'rgba(0, 0, 0, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+
+        // Create filters
+        var filtersContainer = document.getElementById('filtersContainer');
+        filters.forEach(function(filter) {
+            var filterElement = document.createElement('div');
+            filterElement.innerHTML = '<h3>' + filter + '</h3>'; // Example filter
+            filtersContainer.appendChild(filterElement);
+        });
+    });
+</script>
+ 
+
+
+
+{% endblock %}
