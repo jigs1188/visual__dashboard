@@ -45,8 +45,7 @@ console.log("hello");
     {% endfor %}
 </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         var data = {{ data|safe }};
         var entities = ['Intensity', 'Likelihood', 'Relevance', 'Year', 'Country', 'Topics', 'Region', 'City'];
@@ -67,12 +66,12 @@ console.log("hello");
         // Define chart types for each entity
         var chartTypes = {
             'Intensity': 'bar',
-            'Likelihood': 'bar',
-            'Relevance': 'bar',
-            'Year': 'bar',
-            'Country': 'bar',
-            'Topics': 'bar',
-            'Region': 'bar',
+            'Likelihood': 'line',
+            'Relevance': 'radar',
+            'Year': 'doughnut',
+            'Country': 'polarArea',
+            'Topics': 'bubble',
+            'Region': 'pie',
             'City': 'bar'
         };
 
@@ -121,7 +120,6 @@ console.log("hello");
         });
     });
 </script>
- 
 
 
 
