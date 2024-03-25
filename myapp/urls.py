@@ -9,6 +9,7 @@ urlpatterns = [
     path('upload', views.upload, name="upload"),
     path('top', views.top, name="top"),
     path('insert_data_from_json', views.insert_data_from_json, name="insert_data_from_json"),
+    
 ]
 
 

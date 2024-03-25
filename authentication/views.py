@@ -172,3 +172,4 @@ class LogOutView(View):
         auth.logout(request)
         messages.success(request, 'You are now logged out')
         return redirect(request,'login')
+    

@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include('myapp.urls')),
     path('authentication/', include('authentication.urls')),
     path('dash/', include('dash.urls')),
+    
 ]

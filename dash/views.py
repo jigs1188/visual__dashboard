@@ -42,3 +42,9 @@ def chart_view(request):
 #         'data': data,
 #     }
 #     return render(request, 'chart/chart_template.html', context)
+
+def index(request):
+    return render(request, 'index.html')
+
+def data(request):
+    return render(request, 'chart/data.html')

@@ -20,4 +20,5 @@ urlpatterns = [
     # path('authentication/registration/', RedirectView.as_view(url='register/')),
     path('activate/<str:uid64>/<str:token>/', verification.as_view(), name="activate",  kwargs={'uid64': None, 'token': None}),
     path('logout', LogOutView.as_view(), name="logout"),
+    path('verification', verification.as_view, name="verification"),  
 ]
