@@ -49,7 +49,7 @@
             <i class="fa fa-home fa-lg"></i>
             <span class="nav-text">Dashboard</span>
           </a>
-          {% block home %} {% endblock %}
+          
         </li>
 
         <li>
@@ -297,7 +297,7 @@ margin-left: 56px;top:3px;">
     
 
     <div class="container">
-
+      {% block home %} {% endblock %}
       {% block authentication %} {% endblock %}
 
       {% block content %} {% endblock %}

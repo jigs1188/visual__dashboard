@@ -74,9 +74,9 @@ class registration(View):
                 
                 domain = get_current_site(request).domain
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-                token = TokenGenerator.make_token(user)
-                # link = reverse('activate',kwargs={'uidb64':uidb64,'token':token})
-                link = reverse('authentication:activate',kwargs={'uidb64':uidb64,'token':token})
+                token = account_activation_token.make_token(user)                # link = reverse('activate',kwargs={'uidb64':uidb64,'token':token})
+                # link = reverse('authentication:activate',kwargs={'uidb64':uidb64,'token':token})
+                link= reverse('activate', kwargs={'uid64': uidb64, 'token': token})
 
                 activate_url = 'https://'+domain+link
 
@@ -173,3 +173,9 @@ class LogOutView(View):
         messages.success(request, 'You are now logged out')
         return redirect(request,'login')
     
+
+
+
+
+
+

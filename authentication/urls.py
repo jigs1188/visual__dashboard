@@ -15,10 +15,10 @@ urlpatterns = [
     # path('usernamevalidation', usernamevalidation.as_view(), name="usernamevalidation"),
     path('usernamevalidation/', csrf_exempt(usernamevalidation.as_view()), name="usernamevalidation"),
     path('registration/success/', RegistrationSuccessView.as_view(), name='registration_success'),
-    path('RegistrationSuccessView/', views.RegistrationSuccessView.as_view(), name='RegistrationSuccessView'),
+    path('RegistrationSuccessView/', RegistrationSuccessView.as_view(), name='RegistrationSuccessView'),
     path('emailvalidation/', csrf_exempt(emailvalidation.as_view()), name="emailvalidation"),
     # path('authentication/registration/', RedirectView.as_view(url='register/')),
-    path('activate/<str:uid64>/<str:token>/', verification.as_view(), name="activate",  kwargs={'uid64': None, 'token': None}),
+    path('authentication/activate/<str:uid64>/<str:token>/', verification.as_view(), name="activate",  kwargs={'uid64': None, 'token': None}),
     path('logout', LogOutView.as_view(), name="logout"),
     path('verification', verification.as_view, name="verification"),  
 ]
